@@ -385,21 +385,6 @@
   //    conflicted with the WebSocket-based versions below. The WebSocket lobby handles
   //    matchmaking; Firebase is used only to sync player positions during online play.
 
-  function listenToPlayers() {
-    if (!currentRoom) return;
-    db.ref('rooms/' + currentRoom + '/players').on('value', snapshot => {
-      const players = snapshot.val();
-      if (!players || !gameRunning) return;
-
-      // ✅ FIX 3: Use player.pos (grid index) not x/y — match the actual player object shape
-      if (players.p1 && p1 && fbPlayerId !== 'p1') {
-        p1.pos = players.p1.pos;
-      }
-      if (players.p2 && p2 && fbPlayerId !== 'p2') {
-        p2.pos = players.p2.pos;
-      }
-    });
-  }
 
   // ✅ FIX 4: Removed infinite self-recursion — use setInterval for periodic sync instead
   function updateMyPlayer() {
@@ -414,6 +399,15 @@
   // Call periodically (every 100ms) instead of recursively
   setInterval(updateMyPlayer, 100);
 
+  function gameLoop() {
+  if (!gameRunning) return;
+
+  update();
+  updateMyPlayer();
+  draw();
+
+  requestAnimationFrame(gameLoop);
+}
 
 // ═══════════════════════════════
 // STAR FIELD
@@ -783,6 +777,17 @@ function initGame(){
   startSiren();
   loopTimer=setInterval(moveGhosts,120);
   renderLoop();
+}
+
+
+function renderLoop(){
+  if (!gameRunning) return;
+
+  update();            // player movement
+  updateMyPlayer();    // 🔥 Firebase sync
+  draw();              // rendering
+
+  animFrame = requestAnimationFrame(renderLoop);
 }
 
 function stopGame(){
