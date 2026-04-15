@@ -62,17 +62,14 @@
   .mode-card::before{content:'';position:absolute;inset:0;border-radius:14px;opacity:0;transition:opacity .25s;}
   .mode-card.solo::before{background:radial-gradient(circle at 50% 0%,rgba(255,224,0,.15),transparent 70%);}
   .mode-card.local::before{background:radial-gradient(circle at 50% 0%,rgba(0,207,255,.15),transparent 70%);}
-  .mode-card.online::before{background:radial-gradient(circle at 50% 0%,rgba(255,75,216,.15),transparent 70%);}
   .mode-card:hover{transform:translateY(-4px);}
   .mode-card:hover::before{opacity:1;}
   .mode-card.solo:hover{box-shadow:0 8px 30px rgba(255,224,0,.3);border-color:var(--neon-yellow);}
   .mode-card.local:hover{box-shadow:0 8px 30px rgba(0,207,255,.3);border-color:var(--neon-blue);}
-  .mode-card.online:hover{box-shadow:0 8px 30px rgba(255,75,216,.3);border-color:var(--neon-pink);}
   .mode-icon{font-size:28px;display:block;margin-bottom:8px;}
   .mode-name{font-size:10px;font-family:'Orbitron',sans-serif;font-weight:700;margin-bottom:4px;}
   .mode-card.solo .mode-name{color:var(--neon-yellow);}
   .mode-card.local .mode-name{color:var(--neon-blue);}
-  .mode-card.online .mode-name{color:var(--neon-pink);}
   .mode-desc{font-size:5.5px;color:#888;line-height:1.8;}
   .controls-hint{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
     border-radius:12px;padding:12px 18px;width:100%;max-width:480px;margin-top:4px;}
@@ -88,34 +85,6 @@
   .key.spacer{background:transparent;border-color:transparent;}
   .copyright{font-size:5.5px;color:#333;letter-spacing:2px;margin-top:12px;text-align:center;}
   .copyright span{color:var(--neon-pink);}
-
-  /* ── LOBBY ── */
-  #lobby{justify-content:center;min-height:100vh;gap:20px;}
-  .lobby-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,75,216,.3);border-radius:20px;
-    padding:30px;width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;
-    gap:14px;box-shadow:0 0 40px rgba(255,75,216,.1);}
-  .lobby-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--neon-pink);
-    text-shadow:0 0 15px var(--neon-pink);}
-  .room-code-display{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--neon-yellow);
-    letter-spacing:10px;text-shadow:0 0 20px var(--neon-yellow);background:rgba(255,224,0,.05);
-    border:2px solid rgba(255,224,0,.3);border-radius:12px;padding:14px 20px;text-align:center;width:100%;}
-  .neon-input{background:rgba(255,255,255,.04);border:1px solid rgba(255,75,216,.4);border-radius:10px;
-    padding:11px 14px;color:white;font-family:'Orbitron',sans-serif;font-size:15px;letter-spacing:6px;
-    text-align:center;width:100%;outline:none;text-transform:uppercase;transition:border-color .2s,box-shadow .2s;}
-  .neon-input:focus{border-color:var(--neon-pink);box-shadow:0 0 15px rgba(255,75,216,.3);}
-  .neon-btn{font-family:'Press Start 2P',monospace;font-size:8px;padding:11px 18px;border:none;
-    border-radius:8px;cursor:pointer;transition:all .2s;letter-spacing:1px;width:100%;}
-  .neon-btn.yellow{background:var(--neon-yellow);color:#000;box-shadow:0 0 20px rgba(255,224,0,.4);}
-  .neon-btn.yellow:hover{box-shadow:0 0 35px rgba(255,224,0,.7);transform:translateY(-2px);}
-  .neon-btn.pink{background:transparent;color:var(--neon-pink);border:1px solid var(--neon-pink);
-    box-shadow:0 0 10px rgba(255,75,216,.2);}
-  .neon-btn.pink:hover{background:rgba(255,75,216,.1);transform:translateY(-2px);}
-  .neon-btn.ghost-btn{background:transparent;color:#555;border:1px solid #333;font-size:7px;}
-  .neon-btn.ghost-btn:hover{color:#aaa;border-color:#666;}
-  .divider{width:100%;display:flex;align-items:center;gap:10px;color:#444;font-size:7px;}
-  .divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08);}
-  .lobby-status{font-size:7px;color:#666;text-align:center;line-height:2;animation:blink 1.2s step-start infinite;}
-  @keyframes blink{50%{opacity:0;}}
 
   /* ── GAME SCREEN ── */
   #game-screen{flex-direction:column;align-items:center;gap:6px;}
@@ -147,10 +116,6 @@
   @keyframes pulseglow{from{filter:brightness(1);}to{filter:brightness(1.4);}}
   .msg-sub{font-size:7px;color:#888;margin-bottom:20px;}
   .msg-score{font-family:'Orbitron',sans-serif;font-size:14px;color:white;margin-bottom:20px;}
-  #wait-overlay{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;
-    justify-content:center;background:rgba(0,0,8,.9);border-radius:4px;z-index:10;gap:14px;}
-  #wait-overlay.show{display:flex;}
-  .wait-msg{font-size:7px;color:var(--neon-pink);animation:blink 1s step-start infinite;}
   .game-footer{display:flex;justify-content:space-between;align-items:center;
     width:min(560px,100vw);padding:3px 8px;}
   .footer-hint{font-size:5.5px;color:#333;}
@@ -179,12 +144,7 @@
 
   /* Extra padding at bottom when dpad visible on mobile */
   #game-screen.mobile-pad{padding-bottom:220px;}
-  /* Rematch status multi-line */
-  #rematch-status{white-space:pre-line;}
-  #online-btns .neon-btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;}
 </style>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -239,11 +199,6 @@
         <div class="mode-name">LOCAL 2P</div>
         <div class="mode-desc">Two players, one screen</div>
       </div>
-      <div class="mode-card online" onclick="showLobby()">
-        <span class="mode-icon">🌐</span>
-        <div class="mode-name">ONLINE</div>
-        <div class="mode-desc">Room code match</div>
-      </div>
     </div>
   </div>
   <div class="controls-hint">
@@ -271,26 +226,9 @@
     </div>
   </div>
   <div style="margin-top:10px;">
-    <button class="neon-btn ghost-btn" style="width:200px;" onclick="showScreen('platform-select')">← CHANGE PLATFORM</button>
+    <button class="neon-btn ghost-btn" style="width:200px;font-family:'Press Start 2P',monospace;font-size:7px;padding:11px 18px;border:1px solid #333;border-radius:8px;cursor:pointer;background:transparent;color:#555;letter-spacing:1px;" onclick="showScreen('platform-select')">← CHANGE PLATFORM</button>
   </div>
   <div class="copyright">© 2025 — DEVELOPED BY <span>ROHAN KUMAR</span> — ALL RIGHTS RESERVED</div>
-</div>
-
-<!-- ══════════ LOBBY ══════════ -->
-<div id="lobby" class="screen">
-  <div class="lobby-box">
-    <div class="lobby-title">ONLINE LOBBY</div>
-    <button class="neon-btn yellow" onclick="createRoom()">CREATE NEW ROOM</button>
-    <div id="room-display" style="display:none;width:100%;flex-direction:column;align-items:center;gap:10px;">
-      <div style="font-size:6px;color:#666;letter-spacing:2px;">YOUR ROOM CODE</div>
-      <div class="room-code-display" id="room-code-text">----</div>
-      <div class="lobby-status" id="lobby-status">Waiting for player 2...</div>
-    </div>
-    <div class="divider">OR JOIN</div>
-    <input class="neon-input" id="join-code" placeholder="ENTER CODE" maxlength="4" oninput="this.value=this.value.toUpperCase()">
-    <button class="neon-btn pink" onclick="joinRoom()">JOIN ROOM</button>
-    <button class="neon-btn ghost-btn" onclick="showSplash()">← BACK</button>
-  </div>
 </div>
 
 <!-- ══════════ GAME SCREEN ══════════ -->
@@ -317,22 +255,10 @@
       <div class="msg-title" id="msg-title">GAME OVER</div>
       <div class="msg-sub" id="msg-sub">Better luck next time</div>
       <div class="msg-score" id="msg-score">SCORE: 0</div>
-      <!-- Solo / Local buttons -->
       <div id="offline-btns">
-        <button class="neon-btn yellow" onclick="restartGame()" style="width:190px;">PLAY AGAIN</button>
-        <button class="neon-btn ghost-btn" style="width:190px;margin-top:8px;" onclick="showSplash()">MAIN MENU</button>
+        <button style="font-family:'Press Start 2P',monospace;font-size:8px;padding:11px 18px;border:none;border-radius:8px;cursor:pointer;letter-spacing:1px;width:190px;background:var(--neon-yellow);color:#000;box-shadow:0 0 20px rgba(255,224,0,.4);" onclick="restartGame()">PLAY AGAIN</button>
+        <button style="font-family:'Press Start 2P',monospace;font-size:7px;padding:11px 18px;border:1px solid #333;border-radius:8px;cursor:pointer;background:transparent;color:#555;letter-spacing:1px;width:190px;margin-top:8px;" onclick="showSplash()">MAIN MENU</button>
       </div>
-      <!-- Online rematch buttons -->
-      <div id="online-btns" style="display:none;width:100%;max-width:260px;display:none;flex-direction:column;align-items:center;gap:10px;">
-        <button class="neon-btn yellow" id="btn-play-again" onclick="onlineVotePlayAgain()" style="width:100%;">▶ PLAY AGAIN</button>
-        <button class="neon-btn ghost-btn" id="btn-exit-online" onclick="onlineVoteExit()" style="width:100%;">✕ MAIN MENU</button>
-        <div id="rematch-status" style="font-size:6px;color:#888;text-align:center;line-height:2.2;margin-top:4px;min-height:28px;"></div>
-        <div id="redirect-countdown" style="display:none;font-size:6px;color:var(--neon-pink);text-align:center;animation:blink 1s step-start infinite;"></div>
-      </div>
-    </div>
-    <div id="wait-overlay">
-      <div class="wait-msg">WAITING FOR OPPONENT...</div>
-      <div style="font-size:5.5px;color:#555;">Share your room code!</div>
     </div>
   </div>
   <div class="game-footer">
@@ -360,55 +286,7 @@
   </div>
 </div>
 
-
-
 <script>
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyD78luMF2Di74_gdXJJbCspR6_-hWAW6ks",
-    authDomain: "pacman-rohan.firebaseapp.com",
-    databaseURL: "https://pacman-rohan-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "pacman-rohan",
-    storageBucket: "pacman-rohan.firebasestorage.app",
-    messagingSenderId: "544037672572",
-    appId: "1:544037672572:web:5de589c3a2e68988849bf9",
-    measurementId: "G-EJDPRWYGCM"
-  };
-  // ✅ FIX 1: Use compat SDK — firebase.initializeApp() instead of initializeApp()
-  const app = firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-
-  let currentRoom = null;
-  let fbPlayerId = null;
-
-  // ✅ FIX 2: Removed duplicate createRoom() / joinRoom() / listenToPlayers() that
-  //    conflicted with the WebSocket-based versions below. The WebSocket lobby handles
-  //    matchmaking; Firebase is used only to sync player positions during online play.
-
-
-  // ✅ FIX 4: Removed infinite self-recursion — use setInterval for periodic sync instead
-  function updateMyPlayer() {
-    if (!currentRoom || !fbPlayerId || !gameRunning) return;
-    const me = fbPlayerId === 'p1' ? p1 : p2;
-    if (!me) return;
-    db.ref('rooms/' + currentRoom + '/players/' + fbPlayerId).update({
-      pos: me.pos,
-      score: me.score
-    });
-  }
-  // Call periodically (every 100ms) instead of recursively
-  setInterval(updateMyPlayer, 100);
-
-  function gameLoop() {
-  if (!gameRunning) return;
-
-  update();
-  updateMyPlayer();
-  draw();
-
-  requestAnimationFrame(gameLoop);
-}
-
 // ═══════════════════════════════
 // STAR FIELD
 // ═══════════════════════════════
@@ -561,87 +439,7 @@ function showScreen(id){
   }
 }
 function showSplash(){
-  // Clean up any pending lobby listener and room
-  if(_lobbyListener&&typeof db!=='undefined'&&roomCode){
-    db.ref('rooms/'+roomCode+'/guest').off('value',_lobbyListener);
-    db.ref('rooms/'+roomCode+'/started').off('value',_lobbyListener);
-    _lobbyListener=null;
-  }
-  if(isHost&&typeof db!=='undefined'&&roomCode&&!gameRunning){
-    db.ref('rooms/'+roomCode).remove();
-  }
-  roomCode=null;
   showScreen('splash');if(gameRunning)stopGame();
-}
-function showLobby(){showScreen('lobby');}
-
-// ═══════════════════════════════
-// ONLINE LOBBY  (Firebase-based — no WebSocket race conditions)
-// ═══════════════════════════════
-let ws=null,roomCode=null,isHost=false;
-let _lobbyListener=null;
-
-function generateCode(){return Math.random().toString(36).substring(2,6).toUpperCase();}
-
-function createRoom(){
-  if(typeof db==='undefined'){alert('Firebase not ready. Try again.');return;}
-  roomCode=generateCode();isHost=true;
-  document.getElementById('room-code-text').textContent=roomCode;
-  document.getElementById('room-display').style.display='flex';
-  document.getElementById('lobby-status').textContent='Waiting for player 2...';
-
-  // Write room to Firebase, then listen for p2 joining
-  db.ref('rooms/'+roomCode).set({host:'waiting',guest:null,started:false})
-    .then(()=>{
-      _lobbyListener=db.ref('rooms/'+roomCode+'/guest').on('value',snap=>{
-        const v=snap.val();
-        if(v==='ready'){
-          document.getElementById('lobby-status').textContent='Player 2 joined! Starting...';
-          db.ref('rooms/'+roomCode+'/started').set(true);
-          db.ref('rooms/'+roomCode+'/guest').off('value',_lobbyListener);
-          _lobbyListener=null;
-          setTimeout(()=>startOnlineGame(true),800);
-        }
-      });
-    })
-    .catch(()=>alert('Could not create room. Check connection.'));
-}
-
-function joinRoom(){
-  if(typeof db==='undefined'){alert('Firebase not ready. Try again.');return;}
-  const code=document.getElementById('join-code').value.trim().toUpperCase();
-  if(code.length!==4){alert('Enter 4-character room code');return;}
-  roomCode=code;isHost=false;
-
-  // Check room exists first
-  db.ref('rooms/'+roomCode+'/host').once('value').then(snap=>{
-    if(!snap.val()){
-      alert('Room not found. Check the code and try again.');
-      return;
-    }
-    // Show "joining" status to the joiner immediately
-    document.getElementById('room-display').style.display='flex';
-    document.getElementById('room-code-text').textContent=roomCode;
-    document.getElementById('lobby-status').textContent='Joining room...';
-
-    // Signal the host we are ready
-    db.ref('rooms/'+roomCode+'/guest').set('ready').then(()=>{
-      document.getElementById('lobby-status').textContent='Connected! Waiting for host to start...';
-      // Listen for host to flip started flag
-      _lobbyListener=db.ref('rooms/'+roomCode+'/started').on('value',snap2=>{
-        if(snap2.val()===true){
-          db.ref('rooms/'+roomCode+'/started').off('value',_lobbyListener);
-          _lobbyListener=null;
-          setTimeout(()=>startOnlineGame(false),800);
-        }
-      });
-    }).catch(()=>alert('Could not join room. Try again.'));
-  }).catch(()=>alert('Could not reach server. Check your connection.'));
-}
-
-function handleSignal(msg){
-  // Kept for backward compat — now unused for lobby; only move sync uses ws
-  if(msg.type==='move'&&gameRunning)handleRemoteMove(msg.dir);
 }
 
 // ═══════════════════════════════
@@ -683,18 +481,11 @@ const LAYOUT=[
   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 ];
 
-// ── Safe spawn positions (row 26 is fully open corridor) ──
-// P1 at row 23 col 9, P2 at row 23 col 18 — both open dots
-// Actually use row 26 which is ALL open:  1,0,0,0,...,0,0,1
-const P1_START = 26*W + 13;  // row 26 col 13 — verified open
-const P2_START = 26*W + 14;  // row 26 col 14 — verified open
-
-// Ghost house exit
+const P1_START = 26*W + 13;
+const P2_START = 26*W + 14;
 const GH_EXIT_COL = 13;
 const GH_EXIT_ROW = 9;
 const GH_EXIT = GH_EXIT_ROW*W + GH_EXIT_COL;
-
-// Ghost start positions inside lair (row 12-14, cols 11-16)
 const GHOST_STARTS = [12*W+13, 12*W+14, 14*W+13, 14*W+14];
 const GHOST_RELEASE = [0, 6000, 12000, 18000];
 const GHOST_COLORS = ['#FF2D2D','#FF79B5','#00CFE8','#FF8C00'];
@@ -730,22 +521,6 @@ function startLocal(){
   document.getElementById('footer-hint').textContent='P1: WASD · P2: ARROWS · ESC TO QUIT';
   sfxStart();initGame();showScreen('game-screen');
 }
-function startOnlineGame(host){
-  gameMode='online';isHost=host;
-  document.getElementById('p2-score-panel').style.opacity='1';
-  document.getElementById('footer-hint').textContent=host?'P1 (WASD/ARROWS)':'P2 (WASD/ARROWS)';
-  sfxStart();initGame();showScreen('game-screen');
-  // FIX 5: Wire Firebase position sync for online mode
-  currentRoom = roomCode;
-  fbPlayerId = host ? 'p1' : 'p2';
-  if (typeof db !== 'undefined' && currentRoom) {
-    db.ref('rooms/' + currentRoom + '/players/' + fbPlayerId).set({
-      pos: host ? P1_START : P2_START,
-      score: 0
-    });
-    listenToPlayers();
-  }
-}
 
 function initGame(){
   board=[...LAYOUT];
@@ -779,17 +554,6 @@ function initGame(){
   renderLoop();
 }
 
-
-function renderLoop(){
-  if (!gameRunning) return;
-
-  update();            // player movement
-  updateMyPlayer();    // 🔥 Firebase sync
-  draw();              // rendering
-
-  animFrame = requestAnimationFrame(renderLoop);
-}
-
 function stopGame(){
   gameRunning=false;
   cancelAnimationFrame(animFrame);clearInterval(loopTimer);
@@ -813,10 +577,6 @@ document.addEventListener('keydown',e=>{
   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
 });
 
-function handleRemoteMove(dir){
-  setDir(isHost?p2:p1,dir);
-  if(ws)ws.send(JSON.stringify({type:'move',dir}));
-}
 function setDir(player,dir){if(player&&player.active)player.nextDir=dir;}
 
 // ─── D-pad & swipe ───
@@ -901,7 +661,6 @@ function moveGhosts(){if(!gameRunning)return;ghosts.forEach(moveGhost);checkColl
 
 function moveGhost(g){
   if(!g.released&&!g.exiting)return;
-  // Exiting: walk to center col, then up through door
   if(!g.released&&g.exiting){
     const row=Math.floor(g.pos/W),col=g.pos%W;
     if(col<GH_EXIT_COL){g.pos+=1;return;}
@@ -913,7 +672,6 @@ function moveGhost(g){
     }
     g.released=true;g.exiting=false;
   }
-  // Released: normal movement
   const dirs=[-1,1,W,-W],target=getTarget(g);
   let best=null,bestD=Infinity,valid=[];
   dirs.forEach(d=>{
@@ -984,145 +742,12 @@ function endGame(won){
   document.getElementById('msg-title').className='msg-title '+(won?'win':'lose');
   document.getElementById('msg-sub').textContent=won?'All dots consumed!':'Out of lives!';
   document.getElementById('msg-score').textContent=`SCORE: ${gameMode==='local'?`P1:${p1.score} P2:${p2.score}`:p1.score}`;
-
-  if(gameMode==='online'){
-    // Show online rematch panel, hide offline buttons
-    document.getElementById('offline-btns').style.display='none';
-    const ob=document.getElementById('online-btns');
-    ob.style.display='flex';
-    document.getElementById('rematch-status').textContent='Choose an option...';
-    document.getElementById('redirect-countdown').style.display='none';
-    document.getElementById('btn-play-again').disabled=false;
-    document.getElementById('btn-exit-online').disabled=false;
-    // reset firebase vote for this room
-    if(typeof db!=='undefined'&&currentRoom){
-      db.ref('rooms/'+currentRoom+'/rematch').remove();
-      listenRematch();
-    }
-  } else {
-    document.getElementById('offline-btns').style.display='';
-    document.getElementById('online-btns').style.display='none';
-  }
   document.getElementById('msg-overlay').classList.add('show');
 }
 
 function restartGame(){
   document.getElementById('msg-overlay').classList.remove('show');
   sfxStart();initGame();
-}
-
-// ─── Online Rematch Logic ───
-let _rematchListener=null,_redirectTimer=null;
-
-function listenRematch(){
-  if(!currentRoom||typeof db==='undefined')return;
-  if(_rematchListener){db.ref('rooms/'+currentRoom+'/rematch').off('value',_rematchListener);}
-  _rematchListener=db.ref('rooms/'+currentRoom+'/rematch').on('value',snap=>{
-    const votes=snap.val()||{};
-    const myVote=votes[fbPlayerId];
-    const otherKey=fbPlayerId==='p1'?'p2':'p1';
-    const otherVote=votes[otherKey];
-
-    // Update status text
-    let statusLines=[];
-    if(myVote==='play') statusLines.push('✅ You voted PLAY AGAIN');
-    else if(myVote==='exit') statusLines.push('🚪 You voted EXIT');
-    if(otherVote==='play') statusLines.push('✅ Opponent voted PLAY AGAIN');
-    else if(otherVote==='exit') statusLines.push('🚪 Opponent voted EXIT');
-    else if(!otherVote) statusLines.push('⏳ Waiting for opponent...');
-    document.getElementById('rematch-status').textContent = statusLines.join('\n');
-
-    // Both voted
-    if(myVote&&otherVote){
-      if(myVote==='play'&&otherVote==='play'){
-        // Both want to play — start immediately
-        clearRematchListeners();
-        document.getElementById('msg-overlay').classList.remove('show');
-        sfxStart();
-        // re-init Firebase room for new game
-        if(typeof db!=='undefined'&&currentRoom){
-          db.ref('rooms/'+currentRoom+'/rematch').remove();
-        }
-        initGame();
-      } else {
-        // At least one wants to exit — redirect both to lobby with countdown
-        startRedirectCountdown();
-      }
-    } else if(myVote&&!otherVote){
-      // I voted, other hasn't — start countdown for auto-redirect if they don't respond in 15s
-      startAutoRedirectTimer();
-    }
-  });
-}
-
-let _autoRedirectTimer=null;
-
-function startAutoRedirectTimer(){
-  clearTimeout(_autoRedirectTimer);
-  // If opponent hasn't voted within 15 seconds, redirect me to lobby
-  _autoRedirectTimer=setTimeout(()=>{
-    const votes=(typeof db!=='undefined'&&currentRoom)?null:null;// just redirect
-    db.ref('rooms/'+currentRoom+'/rematch/'+fbPlayerId).once('value',snap=>{
-      // check if game already started (both voted play)
-      db.ref('rooms/'+currentRoom+'/rematch').once('value',allSnap=>{
-        const v=allSnap.val()||{};
-        const other=fbPlayerId==='p1'?v.p2:v.p1;
-        if(!other){
-          // Opponent never responded — redirect me
-          startRedirectCountdown();
-        }
-      });
-    });
-  },15000);
-}
-
-function startRedirectCountdown(){
-  clearTimeout(_autoRedirectTimer);
-  let secs=5;
-  const el=document.getElementById('redirect-countdown');
-  el.style.display='block';
-  document.getElementById('btn-play-again').disabled=true;
-  document.getElementById('btn-exit-online').disabled=true;
-  el.textContent=`Redirecting to lobby in ${secs}s...`;
-  _redirectTimer=setInterval(()=>{
-    secs--;
-    el.textContent=`Redirecting to lobby in ${secs}s...`;
-    if(secs<=0){
-      clearInterval(_redirectTimer);
-      clearRematchListeners();
-      // Clean up Firebase
-      if(typeof db!=='undefined'&&currentRoom){
-        db.ref('rooms/'+currentRoom+'/rematch').remove();
-      }
-      document.getElementById('msg-overlay').classList.remove('show');
-      showScreen('lobby');
-    }
-  },1000);
-}
-
-function clearRematchListeners(){
-  clearTimeout(_autoRedirectTimer);
-  clearInterval(_redirectTimer);
-  if(_rematchListener&&typeof db!=='undefined'&&currentRoom){
-    db.ref('rooms/'+currentRoom+'/rematch').off('value',_rematchListener);
-    _rematchListener=null;
-  }
-}
-
-function onlineVotePlayAgain(){
-  if(!currentRoom||typeof db==='undefined')return;
-  document.getElementById('btn-play-again').disabled=true;
-  document.getElementById('btn-exit-online').disabled=true;
-  document.getElementById('rematch-status').textContent='✅ You voted PLAY AGAIN\n⏳ Waiting for opponent...';
-  db.ref('rooms/'+currentRoom+'/rematch/'+fbPlayerId).set('play');
-}
-
-function onlineVoteExit(){
-  if(!currentRoom||typeof db==='undefined')return;
-  document.getElementById('btn-play-again').disabled=true;
-  document.getElementById('btn-exit-online').disabled=true;
-  document.getElementById('rematch-status').textContent='🚪 You voted EXIT\n⏳ Waiting for opponent...';
-  db.ref('rooms/'+currentRoom+'/rematch/'+fbPlayerId).set('exit');
 }
 
 // ─── Score / Lives UI ───
