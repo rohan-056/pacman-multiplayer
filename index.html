@@ -234,7 +234,7 @@
         <div class="mode-name">SOLO</div>
         <div class="mode-desc">Classic single player</div>
       </div>
-      <div class="mode-card local" onclick="startLocal()">
+      <div class="mode-card local" id="local-mode-card" onclick="startLocal()">
         <span class="mode-icon">👾</span>
         <div class="mode-name">LOCAL 2P</div>
         <div class="mode-desc">Two players, one screen</div>
@@ -545,6 +545,8 @@ function selectPlatform(m){
   platformMode=m;
   document.getElementById('ctrl-pc').style.display=m==='pc'?'flex':'none';
   document.getElementById('ctrl-mob').style.display=m==='mobile'?'flex':'none';
+  // Hide Local 2P on mobile — keyboard required
+  document.getElementById('local-mode-card').style.display=m==='mobile'?'none':'flex';
   showScreen('splash');
 }
 
@@ -564,49 +566,87 @@ function showScreen(id){
     gs.classList.remove('mobile-pad');
   }
 }
-function showSplash(){showScreen('splash');if(gameRunning)stopGame();}
+function showSplash(){
+  // Clean up any pending lobby listener and room
+  if(_lobbyListener&&typeof db!=='undefined'&&roomCode){
+    db.ref('rooms/'+roomCode+'/guest').off('value',_lobbyListener);
+    db.ref('rooms/'+roomCode+'/started').off('value',_lobbyListener);
+    _lobbyListener=null;
+  }
+  if(isHost&&typeof db!=='undefined'&&roomCode&&!gameRunning){
+    db.ref('rooms/'+roomCode).remove();
+  }
+  roomCode=null;
+  showScreen('splash');if(gameRunning)stopGame();
+}
 function showLobby(){showScreen('lobby');}
 
 // ═══════════════════════════════
-// ONLINE LOBBY
+// ONLINE LOBBY  (Firebase-based — no WebSocket race conditions)
 // ═══════════════════════════════
 let ws=null,roomCode=null,isHost=false;
+let _lobbyListener=null;
+
 function generateCode(){return Math.random().toString(36).substring(2,6).toUpperCase();}
+
 function createRoom(){
+  if(typeof db==='undefined'){alert('Firebase not ready. Try again.');return;}
   roomCode=generateCode();isHost=true;
   document.getElementById('room-code-text').textContent=roomCode;
   document.getElementById('room-display').style.display='flex';
   document.getElementById('lobby-status').textContent='Waiting for player 2...';
-  connectSignal();
+
+  // Write room to Firebase, then listen for p2 joining
+  db.ref('rooms/'+roomCode).set({host:'waiting',guest:null,started:false})
+    .then(()=>{
+      _lobbyListener=db.ref('rooms/'+roomCode+'/guest').on('value',snap=>{
+        const v=snap.val();
+        if(v==='ready'){
+          document.getElementById('lobby-status').textContent='Player 2 joined! Starting...';
+          db.ref('rooms/'+roomCode+'/started').set(true);
+          db.ref('rooms/'+roomCode+'/guest').off('value',_lobbyListener);
+          _lobbyListener=null;
+          setTimeout(()=>startOnlineGame(true),800);
+        }
+      });
+    })
+    .catch(()=>alert('Could not create room. Check connection.'));
 }
+
 function joinRoom(){
+  if(typeof db==='undefined'){alert('Firebase not ready. Try again.');return;}
   const code=document.getElementById('join-code').value.trim().toUpperCase();
   if(code.length!==4){alert('Enter 4-character room code');return;}
-  roomCode=code;isHost=false;connectSignal();
+  roomCode=code;isHost=false;
+
+  // Check room exists first
+  db.ref('rooms/'+roomCode+'/host').once('value').then(snap=>{
+    if(!snap.val()){
+      alert('Room not found. Check the code and try again.');
+      return;
+    }
+    // Show "joining" status to the joiner immediately
+    document.getElementById('room-display').style.display='flex';
+    document.getElementById('room-code-text').textContent=roomCode;
+    document.getElementById('lobby-status').textContent='Joining room...';
+
+    // Signal the host we are ready
+    db.ref('rooms/'+roomCode+'/guest').set('ready').then(()=>{
+      document.getElementById('lobby-status').textContent='Connected! Waiting for host to start...';
+      // Listen for host to flip started flag
+      _lobbyListener=db.ref('rooms/'+roomCode+'/started').on('value',snap2=>{
+        if(snap2.val()===true){
+          db.ref('rooms/'+roomCode+'/started').off('value',_lobbyListener);
+          _lobbyListener=null;
+          setTimeout(()=>startOnlineGame(false),800);
+        }
+      });
+    }).catch(()=>alert('Could not join room. Try again.'));
+  }).catch(()=>alert('Could not reach server. Check your connection.'));
 }
-function connectSignal(){
-  try{
-    ws=new WebSocket(`wss://socketsbay.com/wss/v2/1/${roomCode}/`);
-    ws.onopen=()=>ws.send(JSON.stringify({type:isHost?'host':'join',room:roomCode}));
-    ws.onmessage=e=>{try{handleSignal(JSON.parse(e.data));}catch{}};
-    ws.onerror=()=>fallback();ws.onclose=()=>{};
-  }catch(e){fallback();}
-}
-function fallback(){
-  roomCode=roomCode||'----';
-  document.getElementById('room-code-text').textContent=roomCode;
-  document.getElementById('room-display').style.display='flex';
-  document.getElementById('lobby-status').textContent='Connected! (Local simulation)';
-  setTimeout(()=>startOnlineGame(true),1200);
-}
+
 function handleSignal(msg){
-  if(msg.type==='join'&&isHost){
-    document.getElementById('lobby-status').textContent='Player 2 joined! Starting...';
-    ws.send(JSON.stringify({type:'start'}));
-    setTimeout(()=>startOnlineGame(true),1000);
-  }
-  if(msg.type==='host'&&!isHost)document.getElementById('lobby-status').textContent='Host found! Waiting...';
-  if(msg.type==='start'&&!isHost)setTimeout(()=>startOnlineGame(false),1000);
+  // Kept for backward compat — now unused for lobby; only move sync uses ws
   if(msg.type==='move'&&gameRunning)handleRemoteMove(msg.dir);
 }
 
