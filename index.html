@@ -985,8 +985,7 @@ function listenRematch(){
     if(otherVote==='play') statusLines.push('✅ Opponent voted PLAY AGAIN');
     else if(otherVote==='exit') statusLines.push('🚪 Opponent voted EXIT');
     else if(!otherVote) statusLines.push('⏳ Waiting for opponent...');
-    document.getElementById('rematch-status').textContent=statusLines.join('
-');
+    document.getElementById('rematch-status').textContent = statusLines.join('\n');
 
     // Both voted
     if(myVote&&otherVote){
@@ -1069,8 +1068,7 @@ function onlineVotePlayAgain(){
   if(!currentRoom||typeof db==='undefined')return;
   document.getElementById('btn-play-again').disabled=true;
   document.getElementById('btn-exit-online').disabled=true;
-  document.getElementById('rematch-status').textContent='✅ You voted PLAY AGAIN
-⏳ Waiting for opponent...';
+  document.getElementById('rematch-status').textContent='✅ You voted PLAY AGAIN\n⏳ Waiting for opponent...';
   db.ref('rooms/'+currentRoom+'/rematch/'+fbPlayerId).set('play');
 }
 
@@ -1078,8 +1076,7 @@ function onlineVoteExit(){
   if(!currentRoom||typeof db==='undefined')return;
   document.getElementById('btn-play-again').disabled=true;
   document.getElementById('btn-exit-online').disabled=true;
-  document.getElementById('rematch-status').textContent='🚪 You voted EXIT
-⏳ Waiting for opponent...';
+  document.getElementById('rematch-status').textContent='🚪 You voted EXIT\n⏳ Waiting for opponent...';
   db.ref('rooms/'+currentRoom+'/rematch/'+fbPlayerId).set('exit');
 }
 
